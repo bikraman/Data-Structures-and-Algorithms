@@ -5,6 +5,69 @@ function ListNode(val, next) {
     this.next = (next===undefined ? null : next)
 }
 
+
+function merge(a, b) {
+
+    if(a.length === 0) {
+        return b
+    }
+
+    if(b.length === 0) {
+        return a
+    }
+
+    let final = []
+
+    let p1 = 0
+    let p2 = 0
+
+    let i = 0
+
+    while(i < a.length + b.length) {
+
+        // console.log(`i: ${i} p1: ${p1} p2: ${p2}`)
+
+        if (a[p1] < b[p2]) {
+            final.push(a[p1])
+            p1++
+            i++
+            
+        }
+        else if (b[p2] < a[p1]) {
+            final.push(b[p2])
+            p2++
+            i++
+        }
+        else if (a[p1] === b[p2]) {
+
+            final.push(b[p2])
+            final.push(a[p1])
+
+            p1++
+            p2++
+
+            i = i + 2
+        }
+        else if(a[p1] === undefined){
+
+            final.push(b[p2])
+            p2++
+
+            i++
+        }
+        else if(b[p2] === undefined) {
+            final.push(a[p1])
+            p1++
+
+            i++
+        }
+    }
+
+    return final
+
+}
+
+
 /**
  * @param {ListNode} list1
  * @param {ListNode} list2
@@ -12,13 +75,13 @@ function ListNode(val, next) {
  */
 var mergeTwoLists = function(list1, list2) {
 
-    let final = []
+    let a = []
+    let b = []
 
     let flag = true
     let curr = null
 
-
-    if (list1 !== null || list1 !== undefined) {
+    if (list1 !== null && list1 !== undefined) {
         curr = list1
         while(flag) {
     
@@ -26,14 +89,14 @@ var mergeTwoLists = function(list1, list2) {
                 flag = false
             }
     
-            final.push(curr.val)
+            a.push(curr.val)
             curr = curr.next
         }   
     }
 
     flag = true
 
-    if (list2 !== null || list2 !== undefined) {
+    if (list2 !== null && list2 !== undefined) {
         curr = list2
 
         while(flag) {
@@ -42,12 +105,12 @@ var mergeTwoLists = function(list1, list2) {
                 flag = false
             }
     
-            final.push(curr.val)
+            b.push(curr.val)
             curr = curr.next
         }
     }
 
-    let sorted_final = final.sort((a, b) => a - b)
+    let sorted_final = merge(a,b)
 
     curr = null
 
@@ -60,12 +123,14 @@ var mergeTwoLists = function(list1, list2) {
     return curr
 };
 
-const fifth = new ListNode(5)
-const fourth = new ListNode(4, fifth)
-const third = new ListNode(3, fourth)
-const second = new ListNode(2, third)
-const head = new ListNode(1, second)
+const fifth = new ListNode(12)
+const fourth = new ListNode(9, fifth)
+const third = new ListNode(7, fourth)
+const second = new ListNode(6, third)
+const head = new ListNode(5, second)
+
+const second2 = new ListNode(13)
+const head2 = new ListNode(4, second2)
+console.log(mergeTwoLists(head, head2))
 
 
-const head2 = new ListNode(10)
-mergeTwoLists(head, head2 )
